@@ -1,0 +1,160 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: 'ITF Rayatar';
+  src: url('/fonts/ITFRAYATAR-LIGHT.woff') format('woff');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'ITF Rayatar';
+  src: url('/fonts/ITFRAYATAR-REGULAR.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'ITF Rayatar';
+  src: url('/fonts/ITFRAYATAR-MEDIUM.woff') format('woff');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'ITF Rayatar';
+  src: url('/fonts/ITFRAYATAR-BOLD.woff') format('woff');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'ITF Rayatar';
+  src: url('/fonts/ITFRAYATAR-BLACK.woff') format('woff');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@theme {
+  --color-cream: #FFDCA6;
+  --color-brand-red: #ED1C24;
+  --color-brand-blue: #56CAF4;
+  --color-brand-orange: #F9A719;
+  --color-brand-purple: #57479C;
+  --color-brand-green: #7CC142;
+  --color-caramel: #ED1C24;
+  --color-chocolate: #5A3E2B;
+  
+  --font-sans: 'ITF Rayatar', sans-serif;
+}
+
+@layer base {
+  * {
+    font-family: 'ITF Rayatar', sans-serif;
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    background-color: var(--color-cream);
+    color: var(--color-chocolate);
+    font-family: 'ITF Rayatar', sans-serif !important;
+  }
+}
+
+/* Glassmorphism utility */
+.glass {
+  background: rgba(248, 245, 240, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.glass-dark {
+  background: rgba(90, 62, 43, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.bg-pattern-light {
+  background-image: linear-gradient(rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.6)), url('https://alsabahcandies.com/Test/pattern-01.svg');
+  background-repeat: repeat;
+  background-size: 400px;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+.bg-footer-gradient {
+  background-color: #FFDCA6;
+  position: relative;
+  overflow: hidden;
+}
+
+@keyframes fluid-move-1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(10%, 10%) scale(1.1); }
+  66% { transform: translate(-5%, 15%) scale(0.9); }
+}
+
+@keyframes fluid-move-2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(-15%, -5%) scale(1.2); }
+  66% { transform: translate(10%, -10%) scale(0.8); }
+}
+
+@keyframes fluid-move-3 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(5%, -15%) scale(0.9); }
+  66% { transform: translate(-10%, 10%) scale(1.1); }
+}
+
+.fluid-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(120px);
+  opacity: 0.7;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.fluid-blob-1 {
+  width: 80%;
+  height: 80%;
+  background: radial-gradient(circle, #ED1C24 0%, transparent 70%);
+  top: -10%;
+  right: -20%;
+  animation: fluid-move-1 25s ease-in-out infinite;
+}
+
+.fluid-blob-2 {
+  width: 70%;
+  height: 70%;
+  background: radial-gradient(circle, #800000 0%, transparent 70%);
+  bottom: -10%;
+  left: -10%;
+  animation: fluid-move-2 30s ease-in-out infinite;
+}
+
+.fluid-blob-3 {
+  width: 60%;
+  height: 60%;
+  background: radial-gradient(circle, #F9A719 0%, transparent 70%);
+  top: 20%;
+  left: 10%;
+  animation: fluid-move-3 20s ease-in-out infinite;
+}
+
+.fluid-blob-4 {
+  width: 50%;
+  height: 50%;
+  background: radial-gradient(circle, #FFDCA6 0%, transparent 70%);
+  bottom: 10%;
+  right: 10%;
+  animation: fluid-move-1 22s ease-in-out infinite reverse;
+}

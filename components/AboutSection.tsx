@@ -3,7 +3,21 @@
 import { motion } from 'motion/react';
 import Image from 'next/image';
 
-export function AboutSection() {
+interface AboutSectionProps {
+  data?: {
+    title: string;
+    subtitle: string;
+    description: string;
+    image_url: string;
+  };
+}
+
+export function AboutSection({ data }: AboutSectionProps) {
+  const title = data?.title || "نصنع ذكريات حلوة منذ 1947";
+  const subtitle = data?.subtitle || "تراثنا";
+  const description = data?.description || "تأسست شركة الصباح في دمشق عام 1947 وتعد من أول وأعرق الشركات في صناعة السكاكر والكراميل. تمتلك الشركة خبرة طويلة وسمعة مميزة في الأسواق المحلية والإقليمية، وتقدم تشكيلة واسعة وفاخرة من النكهات المتعددة لتناسب مختلف الأذواق. نلتزم دائماً بالجودة العالية والمذاق الأصيل.";
+  const imageUrl = data?.image_url || "https://alsabahcandies.com/Test/post-new.png";
+
   return (
     <section id="about" className="py-24 md:py-32 relative overflow-hidden bg-white bg-pattern-light">
       {/* Organic floating shapes */}
@@ -32,12 +46,12 @@ export function AboutSection() {
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8 }}
           >
-            <h2 className="text-[36px] uppercase tracking-[0.2em] text-brand-red mb-4 font-medium">تراثنا</h2>
+            <h2 className="text-[36px] uppercase tracking-[0.2em] text-brand-red mb-4 font-medium">{subtitle}</h2>
             <h3 className="text-4xl md:text-5xl font-bold text-chocolate mb-8 leading-tight">
-              نصنع ذكريات حلوة منذ 1947
+              {title}
             </h3>
             <p className="text-lg text-chocolate/80 leading-relaxed mb-6 font-light">
-              تأسست شركة الصباح في دمشق عام 1947 وتعد من أول وأعرق الشركات في صناعة السكاكر والكراميل. تمتلك الشركة خبرة طويلة وسمعة مميزة في الأسواق المحلية والإقليمية، وتقدم تشكيلة واسعة وفاخرة من النكهات المتعددة لتناسب مختلف الأذواق. نلتزم دائماً بالجودة العالية والمذاق الأصيل.
+              {description}
             </p>
           </motion.div>
           
@@ -50,8 +64,8 @@ export function AboutSection() {
           >
             <div className="aspect-[4/5] rounded-[2rem] overflow-hidden shadow-2xl relative">
               <Image 
-                src="https://alsabahcandies.com/Test/post-new.png" 
-                alt="Candy making process" 
+                src={imageUrl} 
+                alt={title} 
                 fill
                 className="object-cover"
                 referrerPolicy="no-referrer"

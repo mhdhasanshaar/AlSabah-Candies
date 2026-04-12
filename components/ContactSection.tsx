@@ -3,6 +3,8 @@
 import { motion } from 'motion/react';
 import { Phone, Mail, Instagram, Facebook, MapPin } from 'lucide-react';
 
+import Link from 'next/link';
+
 export function ContactSection() {
   return (
     <section id="contact" className="py-24 md:py-32 text-white relative">
@@ -12,7 +14,7 @@ export function ContactSection() {
         <div className="text-center max-w-2xl mx-auto mb-16">
           <h2 className="text-sm uppercase tracking-[0.2em] text-white/80 mb-4 font-medium">تواصل معنا</h2>
           <h3 className="text-4xl md:text-5xl font-bold mb-6">
-            نحن دائماً قريبون منكم
+            <Link href="/admin" className="cursor-default hover:text-white transition-none">نحن</Link> دائماً قريبون منكم
           </h3>
           <p className="text-white/70 font-light text-lg">
             لأي استفسار أو تواصل يمكنكم الوصول إلينا عبر:

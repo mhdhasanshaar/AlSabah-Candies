@@ -1,3 +1,6 @@
+'use client';
+
+import { useState, useEffect } from 'react';
 import { Navbar } from '@/components/Navbar';
 import { HeroSection } from '@/components/HeroSection';
 import { AboutSection } from '@/components/AboutSection';
@@ -5,17 +8,46 @@ import { ProductsSection } from '@/components/ProductsSection';
 import { PackagingSection } from '@/components/PackagingSection';
 import { ContactSection } from '@/components/ContactSection';
 import { Footer } from '@/components/Footer';
-import { getStoreData } from '@/lib/store';
+import { Product } from '@/lib/store';
 
 export default function Home() {
-  const data = getStoreData();
+  const [products, setProducts] = useState<Product[]>([]);
+  const [banner, setBanner] = useState('');
+  const [sections, setSections] = useState<any>({});
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [prodRes, bannerRes, sectionsRes] = await Promise.all([
+          fetch('/api/products.php'),
+          fetch('/api/banners.php'),
+          fetch('/api/get-sections.php')
+        ]);
+        
+        const prodData = await prodRes.json();
+        const bannerData = await bannerRes.json();
+        const sectionsData = await sectionsRes.json();
+        
+        setProducts(Array.isArray(prodData) ? prodData : []);
+        setBanner(bannerData.banner || '');
+        setSections(sectionsData || {});
+      } catch (error) {
+        console.error('Error fetching dynamic data:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <main className="min-h-screen bg-cream">
       <Navbar />
-      <HeroSection bannerUrl={data.banner} />
-      <AboutSection />
-      <ProductsSection products={data.products} />
+      <HeroSection bannerUrl={banner} />
+      <AboutSection data={sections['about']} />
+      <ProductsSection products={products} />
       <PackagingSection />
       <div className="bg-footer-gradient relative">
         {/* Animated Fluid Blobs */}

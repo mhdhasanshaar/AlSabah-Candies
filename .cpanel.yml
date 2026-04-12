@@ -2,4 +2,4 @@
 deployment:
   tasks:
     - export DEPLOYPATH=/home/alsabah/public_html/
-    - /bin/rsync -av --delete ./out/ $DEPLOYPATH
+    - /bin/rsync -av ./out/ $DEPLOYPATH

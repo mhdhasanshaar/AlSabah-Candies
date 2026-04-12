@@ -143,7 +143,10 @@ export default function AdminDashboard() {
     <div className="min-h-screen bg-cream p-6 md:p-12">
       <div className="max-w-6xl mx-auto">
         <div className="flex justify-between items-center mb-12">
-          <h1 className="text-3xl font-bold text-chocolate">لوحة التحكم</h1>
+          <div>
+            <h1 className="text-3xl font-bold text-chocolate">لوحة التحكم</h1>
+            <p className="text-red-500 text-sm mt-2 font-medium">تنبيه: لوحة التحكم معطلة في وضع التصدير الثابت (Static Export). التغييرات لن يتم حفظها.</p>
+          </div>
           <button 
             onClick={() => setIsAuthenticated(false)}
             className="px-4 py-2 text-chocolate border border-chocolate rounded-lg hover:bg-chocolate hover:text-cream transition-colors"

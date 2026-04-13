@@ -1,45 +1,5 @@
 @import "tailwindcss";
 
-@font-face {
-  font-family: 'ITF Rayatar';
-  src: url('/fonts/ITFRAYATAR-LIGHT.woff') format('woff');
-  font-weight: 300;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'ITF Rayatar';
-  src: url('/fonts/ITFRAYATAR-REGULAR.woff') format('woff');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'ITF Rayatar';
-  src: url('/fonts/ITFRAYATAR-MEDIUM.woff') format('woff');
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'ITF Rayatar';
-  src: url('/fonts/ITFRAYATAR-BOLD.woff') format('woff');
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'ITF Rayatar';
-  src: url('/fonts/ITFRAYATAR-BLACK.woff') format('woff');
-  font-weight: 900;
-  font-style: normal;
-  font-display: swap;
-}
-
 @theme {
   --color-cream: #FFDCA6;
   --color-brand-red: #ED1C24;
@@ -50,12 +10,12 @@
   --color-caramel: #ED1C24;
   --color-chocolate: #5A3E2B;
   
-  --font-sans: 'ITF Rayatar', sans-serif;
+  --font-sans: var(--font-itf-rayatar), sans-serif;
 }
 
 @layer base {
   * {
-    font-family: 'ITF Rayatar', sans-serif;
+    font-family: var(--font-itf-rayatar), sans-serif;
   }
   html {
     scroll-behavior: smooth;
@@ -63,7 +23,7 @@
   body {
     background-color: var(--color-cream);
     color: var(--color-chocolate);
-    font-family: 'ITF Rayatar', sans-serif !important;
+    font-family: var(--font-itf-rayatar), sans-serif !important;
   }
 }
 

@@ -22,10 +22,10 @@ export default function Home() {
     const fetchData = async () => {
       try {
         const [prodRes, otherProdRes, bannerRes, sectionsRes] = await Promise.all([
-          fetch('/api/products.php'),
-          fetch('/api/other-products.php'),
-          fetch('/api/banners.php'),
-          fetch('/api/get-sections.php')
+          fetch('/api/products'),
+          fetch('/api/other-products'),
+          fetch('/api/banners'),
+          fetch('/api/sections')
         ]);
         
         let prodData = [];

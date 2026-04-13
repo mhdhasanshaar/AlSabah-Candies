@@ -26,13 +26,12 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'images.unsplash.com',
+        hostname: 'res.cloudinary.com',
         port: '',
         pathname: '/**',
       }
     ],
   },
-  output: 'export',
   trailingSlash: true,
   transpilePackages: ['motion'],
   webpack: (config, {dev}) => {

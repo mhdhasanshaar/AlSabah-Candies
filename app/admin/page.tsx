@@ -54,8 +54,8 @@ export default function AdminPage() {
     setIsLoading(true);
     try {
       const [pRes, oRes] = await Promise.all([
-        fetch('/api/products.php'),
-        fetch('/api/other-products.php')
+        fetch('/api/products'),
+        fetch('/api/other-products')
       ]);
       const pData = await safeParse(pRes) || [];
       const oData = await safeParse(oRes) || [];
@@ -104,7 +104,7 @@ export default function AdminPage() {
     formData.append('type', typeMap[type]);
 
     try {
-      const res = await fetch('/api/upload.php', {
+      const res = await fetch('/api/upload', {
         method: 'POST',
         body: formData,
       });
@@ -128,7 +128,7 @@ export default function AdminPage() {
   const handleAddProduct = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const res = await fetch('/api/add-product.php', {
+      const res = await fetch('/api/products/add', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -153,7 +153,7 @@ export default function AdminPage() {
   const handleAddOtherProduct = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const res = await fetch('/api/add-other-product.php', {
+      const res = await fetch('/api/other-products/add', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -179,7 +179,7 @@ export default function AdminPage() {
   const handleAddBanner = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const res = await fetch('/api/add-banner.php', {
+      const res = await fetch('/api/banners/add', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ banner_url: bannerUrl }),
@@ -199,7 +199,7 @@ export default function AdminPage() {
   const handleUpdateSection = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const res = await fetch('/api/update-section.php', {
+      const res = await fetch('/api/sections/update', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -224,7 +224,7 @@ export default function AdminPage() {
   const handleDelete = async (id: number, type: 'main' | 'other') => {
     if (!confirm('هل أنت متأكد من حذف هذا المنتج؟')) return;
     try {
-      const res = await fetch('/api/delete-product.php', {
+      const res = await fetch('/api/products/delete', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id, type }),

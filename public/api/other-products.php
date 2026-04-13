@@ -2,7 +2,7 @@
 require_once 'db.php';
 
 try {
-    $stmt = $pdo->query('SELECT id, name, description, image_url FROM products ORDER BY id DESC');
+    $stmt = $pdo->query('SELECT * FROM other_products ORDER BY id DESC');
     $products = $stmt->fetchAll();
     echo json_encode($products);
 } catch (\PDOException $e) {

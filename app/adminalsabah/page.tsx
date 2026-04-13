@@ -26,13 +26,24 @@ export default function AdminDashboard() {
     setIsLoading(true);
     try {
       const [prodRes, bannerRes] = await Promise.all([
-        fetch('/api/products'),
-        fetch('/api/banner')
+        fetch('/api/products.php'),
+        fetch('/api/banners.php')
       ]);
-      const prods = await prodRes.json();
-      const { banner } = await bannerRes.json();
+      
+      const safeParse = async (res: Response) => {
+        const text = await res.text();
+        try {
+          return JSON.parse(text);
+        } catch (e) {
+          return null;
+        }
+      };
+
+      const prods = await safeParse(prodRes) || [];
+      const bannerData = await safeParse(bannerRes) || { banner: '' };
+      
       setProducts(prods);
-      setBannerUrl(banner);
+      setBannerUrl(bannerData.banner || '');
     } catch (err) {
       console.error('Failed to fetch data', err);
     } finally {
@@ -114,7 +125,7 @@ export default function AdminDashboard() {
       <div className="min-h-screen bg-cream flex items-center justify-center p-6">
         <div className="bg-white p-8 rounded-2xl shadow-xl max-w-md w-full">
           <div className="text-center mb-8">
-            <Image src="https://alsabahcandies.com/Test/logo.sabah.svg" alt="Logo" width={120} height={64} className="h-16 w-auto mx-auto mb-4" referrerPolicy="no-referrer" />
+            <Image src="https://alsabahcandies.com/Materials/logo.sabah.svg" alt="Logo" width={120} height={64} className="h-16 w-auto mx-auto mb-4" referrerPolicy="no-referrer" />
             <h1 className="text-2xl font-bold text-chocolate">تسجيل دخول الإدارة</h1>
           </div>
           <form onSubmit={handleLogin} className="space-y-4">
@@ -164,7 +175,7 @@ export default function AdminDashboard() {
               value={bannerUrl}
               onChange={(e) => setBannerUrl(e.target.value)}
               className="flex-1 px-4 py-2 border border-brand-red/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-red text-left"
-              placeholder="رابط الفيديو (مثال: https://alsabahcandies.com/Test/hero-banner2.mp4)"
+              placeholder="رابط الفيديو (مثال: https://alsabahcandies.com/Materials/smooth-looping.mp4)"
               dir="ltr"
             />
             <button type="submit" className="bg-brand-red text-white px-6 py-2 rounded-lg hover:bg-brand-red/90 transition-colors">
@@ -257,7 +268,11 @@ export default function AdminDashboard() {
                     <tr key={product.id} className="border-b border-brand-red/10 hover:bg-cream/30 transition-colors">
                       <td className="p-4">
                         <div className="relative w-12 h-12 bg-cream rounded-lg p-1 overflow-hidden">
-                          <Image src={product.image} alt={product.name} fill className="object-contain" referrerPolicy="no-referrer" />
+                          {product.image ? (
+                            <Image src={product.image} alt={product.name} fill className="object-contain" referrerPolicy="no-referrer" />
+                          ) : (
+                            <div className="w-full h-full bg-chocolate/10 flex items-center justify-center text-[10px]">No Image</div>
+                          )}
                         </div>
                       </td>
                       <td className="p-4 font-medium text-chocolate">{product.name}</td>

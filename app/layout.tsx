@@ -2,7 +2,7 @@ import type {Metadata} from 'next';
 import './globals.css'; // Global styles
 
 export const metadata: Metadata = {
-  title: 'حلويات الصباح | منذ 1947',
+  title: 'سكاكر الصباح | منذ 1947',
   description: 'موقع إلكتروني حديث وفاخر لعلامة تجارية رائدة في صناعة الحلويات.',
 };
 

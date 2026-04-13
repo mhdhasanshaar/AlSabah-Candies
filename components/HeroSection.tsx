@@ -12,15 +12,17 @@ export function HeroSection({ bannerUrl }: HeroSectionProps) {
     <section className="relative h-screen w-full overflow-hidden flex items-center justify-center">
       {/* Video Background */}
       <div className="absolute inset-0 z-0">
-        <video 
-          autoPlay 
-          muted 
-          loop 
-          playsInline
-          className="w-full h-full object-cover"
-        >
-          <source src={bannerUrl} type="video/mp4" />
-        </video>
+        {bannerUrl && (
+          <video 
+            autoPlay 
+            muted 
+            loop 
+            playsInline
+            className="w-full h-full object-cover"
+          >
+            <source src={bannerUrl} type="video/mp4" />
+          </video>
+        )}
         {/* Gradient Overlay for readability */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/20 to-cream/90" />
       </div>
@@ -34,7 +36,7 @@ export function HeroSection({ bannerUrl }: HeroSectionProps) {
           className="mb-8"
         >
           <Image 
-            src="https://alsabahcandies.com/Test/logo.sabah.svg" 
+            src="https://alsabahcandies.com/Materials/logo.sabah.svg" 
             alt="Alsabah Candies Logo" 
             width={200}
             height={100}

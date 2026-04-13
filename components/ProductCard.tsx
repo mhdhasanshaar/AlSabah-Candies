@@ -7,9 +7,10 @@ interface ProductCardProps {
   title: string;
   description: string;
   image: string;
+  weight?: string;
 }
 
-export function ProductCard({ title, description, image }: ProductCardProps) {
+export function ProductCard({ title, description, image, weight }: ProductCardProps) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -25,13 +26,19 @@ export function ProductCard({ title, description, image }: ProductCardProps) {
           transition={{ duration: 0.4 }}
           className="relative w-full h-full drop-shadow-2xl"
         >
-          <Image
-            src={image}
-            alt={title}
-            fill
-            className="object-contain"
-            referrerPolicy="no-referrer"
-          />
+          {image ? (
+            <Image
+              src={image}
+              alt={title}
+              fill
+              className="object-contain"
+              referrerPolicy="no-referrer"
+            />
+          ) : (
+            <div className="w-full h-full bg-white/10 rounded-full flex items-center justify-center text-white/40">
+              <span>No Image</span>
+            </div>
+          )}
         </motion.div>
       </div>
 
@@ -72,6 +79,13 @@ export function ProductCard({ title, description, image }: ProductCardProps) {
               {title}
             </h4>
           </div>
+
+          {/* Weight Badge (Optional) */}
+          {weight && (
+            <div className="bg-chocolate/10 px-4 py-1 rounded-full">
+              <span className="text-chocolate font-medium text-sm">{weight}</span>
+            </div>
+          )}
 
           {/* Description */}
           <p className="text-chocolate/80 text-base md:text-lg font-light leading-relaxed max-w-[280px] mx-auto">

@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $pdo->query("UPDATE banners SET active = 0");
             
             // Insert new active banner
-            $sql = "INSERT INTO banners (banner, active) VALUES (?, 1)";
+            $sql = "INSERT INTO banners (banner_url, active) VALUES (?, 1)";
             $stmt = $pdo->prepare($sql);
             $stmt->execute([$data['banner_url']]);
             echo json_encode(['success' => true]);

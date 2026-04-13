@@ -5,6 +5,7 @@ import { Navbar } from '@/components/Navbar';
 import { HeroSection } from '@/components/HeroSection';
 import { AboutSection } from '@/components/AboutSection';
 import { ProductsSection } from '@/components/ProductsSection';
+import { OtherProductsSection } from '@/components/OtherProductsSection';
 import { PackagingSection } from '@/components/PackagingSection';
 import { ContactSection } from '@/components/ContactSection';
 import { Footer } from '@/components/Footer';
@@ -12,6 +13,7 @@ import { Product } from '@/lib/store';
 
 export default function Home() {
   const [products, setProducts] = useState<Product[]>([]);
+  const [otherProducts, setOtherProducts] = useState<any[]>([]);
   const [banner, setBanner] = useState('');
   const [sections, setSections] = useState<any>({});
   const [isLoading, setIsLoading] = useState(true);
@@ -19,17 +21,36 @@ export default function Home() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [prodRes, bannerRes, sectionsRes] = await Promise.all([
+        const [prodRes, otherProdRes, bannerRes, sectionsRes] = await Promise.all([
           fetch('/api/products.php'),
+          fetch('/api/other-products.php'),
           fetch('/api/banners.php'),
           fetch('/api/get-sections.php')
         ]);
         
-        const prodData = await prodRes.json();
-        const bannerData = await bannerRes.json();
-        const sectionsData = await sectionsRes.json();
+        let prodData = [];
+        let otherProdData = [];
+        let bannerData = { banner: '' };
+        let sectionsData = {};
+
+        // Helper to safely parse JSON
+        const safeParse = async (res: Response) => {
+          const text = await res.text();
+          try {
+            return JSON.parse(text);
+          } catch (e) {
+            console.warn('Failed to parse JSON from', res.url, 'Response was:', text.substring(0, 100));
+            return null;
+          }
+        };
+
+        prodData = await safeParse(prodRes) || [];
+        otherProdData = await safeParse(otherProdRes) || [];
+        bannerData = await safeParse(bannerRes) || { banner: '' };
+        sectionsData = await safeParse(sectionsRes) || {};
         
         setProducts(Array.isArray(prodData) ? prodData : []);
+        setOtherProducts(Array.isArray(otherProdData) ? otherProdData : []);
         setBanner(bannerData.banner || '');
         setSections(sectionsData || {});
       } catch (error) {
@@ -49,6 +70,7 @@ export default function Home() {
       <AboutSection data={sections['about']} />
       <ProductsSection products={products} />
       <PackagingSection />
+      <OtherProductsSection products={otherProducts} />
       <div className="bg-footer-gradient relative">
         {/* Animated Fluid Blobs */}
         <div className="fluid-blob fluid-blob-1" />

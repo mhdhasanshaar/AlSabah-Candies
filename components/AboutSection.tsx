@@ -15,8 +15,8 @@ interface AboutSectionProps {
 export function AboutSection({ data }: AboutSectionProps) {
   const title = data?.title || "نصنع ذكريات حلوة منذ 1947";
   const subtitle = data?.subtitle || "تراثنا";
-  const description = data?.description || "تأسست شركة الصباح في دمشق عام 1947 وتعد من أول وأعرق الشركات في صناعة السكاكر والكراميل. تمتلك الشركة خبرة طويلة وسمعة مميزة في الأسواق المحلية والإقليمية، وتقدم تشكيلة واسعة وفاخرة من النكهات المتعددة لتناسب مختلف الأذواق. نلتزم دائماً بالجودة العالية والمذاق الأصيل.";
-  const imageUrl = data?.image_url || "https://alsabahcandies.com/Test/post-new.png";
+  const description = data?.description || "تأسست شركة سكاكر الصباح في دمشق عام 1947 وتعد من أول وأعرق الشركات في صناعة السكاكر والكراميل. تمتلك الشركة خبرة طويلة وسمعة مميزة في الأسواق المحلية والإقليمية، وتقدم تشكيلة واسعة وفاخرة من النكهات المتعددة لتناسب مختلف الأذواق. نلتزم دائماً بالجودة العالية والمذاق الأصيل.";
+  const imageUrl = data?.image_url || "https://alsabahcandies.com/Materials/post-new.png";
 
   return (
     <section id="about" className="py-24 md:py-32 relative overflow-hidden bg-white bg-pattern-light">

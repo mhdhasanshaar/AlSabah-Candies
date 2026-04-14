@@ -27,14 +27,32 @@ export function ContactSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className="bg-white/10 backdrop-blur-md p-8 rounded-[2rem] text-center flex flex-col items-center border border-white/10"
+            className="bg-white/10 backdrop-blur-xl p-10 rounded-[2.5rem] text-center flex flex-col items-center border border-white/20 shadow-2xl hover:bg-white/15 transition-all duration-300"
           >
-            <div className="w-16 h-16 rounded-full bg-white/20 flex items-center justify-center mb-6 text-white">
-              <Phone size={28} />
+            <div className="w-20 h-20 rounded-2xl bg-white/20 flex items-center justify-center mb-8 text-white shadow-inner">
+              <Phone size={32} />
             </div>
-            <h4 className="text-xl font-bold mb-4">اتصل بنا</h4>
-            <p className="text-white/80 mb-2 font-light" dir="ltr">هاتف المعمل: +963 11 472 3798</p>
-            <p className="text-white/80 font-light" dir="ltr">رقم المبيعات: +963 954 400 301</p>
+            <h4 className="text-2xl font-bold mb-6">اتصل بنا</h4>
+            <div className="space-y-3 w-full">
+              <div className="flex flex-col items-center">
+                <span className="text-xs text-white/50 mb-1">هاتف المعمل</span>
+                <p 
+                  className="text-lg text-white/90 font-medium tracking-wider" 
+                  style={{ direction: 'ltr', unicodeBidi: 'embed' }}
+                >
+                  +963 11 472 3798
+                </p>
+              </div>
+              <div className="flex flex-col items-center">
+                <span className="text-xs text-white/50 mb-1">رقم المبيعات</span>
+                <p 
+                  className="text-lg text-white/90 font-medium tracking-wider" 
+                  style={{ direction: 'ltr', unicodeBidi: 'embed' }}
+                >
+                  +963 954 400 301
+                </p>
+              </div>
+            </div>
           </motion.div>
 
           <motion.div 
@@ -42,14 +60,20 @@ export function ContactSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="bg-white/10 backdrop-blur-md p-8 rounded-[2rem] text-center flex flex-col items-center border border-white/10"
+            className="bg-white/10 backdrop-blur-xl p-10 rounded-[2.5rem] text-center flex flex-col items-center border border-white/20 shadow-2xl hover:bg-white/15 transition-all duration-300"
           >
-            <div className="w-16 h-16 rounded-full bg-white/20 flex items-center justify-center mb-6 text-white">
-              <Mail size={28} />
+            <div className="w-20 h-20 rounded-2xl bg-white/20 flex items-center justify-center mb-8 text-white shadow-inner">
+              <Mail size={32} />
             </div>
-            <h4 className="text-xl font-bold mb-4">راسلنا</h4>
-            <a href="mailto:sales@Alsabahcandies.com" className="text-white/80 hover:text-white transition-colors font-light">
-              sales@Alsabahcandies.com
+            <h4 className="text-2xl font-bold mb-6">راسلنا</h4>
+            <a 
+              href="mailto:sales@Alsabahcandies.com" 
+              className="group flex flex-col items-center gap-2"
+            >
+              <span className="text-xs text-white/50">البريد الإلكتروني</span>
+              <span className="text-lg text-white/90 hover:text-white transition-colors font-medium border-b border-transparent hover:border-white/30 pb-1">
+                sales@Alsabahcandies.com
+              </span>
             </a>
           </motion.div>
 
@@ -58,18 +82,30 @@ export function ContactSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="bg-white/10 backdrop-blur-md p-8 rounded-[2rem] text-center flex flex-col items-center border border-white/10"
+            className="bg-white/10 backdrop-blur-xl p-10 rounded-[2.5rem] text-center flex flex-col items-center border border-white/20 shadow-2xl hover:bg-white/15 transition-all duration-300"
           >
-            <div className="w-16 h-16 rounded-full bg-white/20 flex items-center justify-center mb-6 text-white">
-              <MapPin size={28} />
+            <div className="w-20 h-20 rounded-2xl bg-white/20 flex items-center justify-center mb-8 text-white shadow-inner">
+              <Instagram size={32} />
             </div>
-            <h4 className="text-xl font-bold mb-4">تابعنا</h4>
-            <div className="flex gap-4">
-              <a href="#" className="text-white/80 hover:text-white transition-colors flex items-center gap-2 font-light">
-                <Facebook size={20} /> فيسبوك
+            <h4 className="text-2xl font-bold mb-6">تابعنا</h4>
+            <div className="flex flex-col gap-4 w-full">
+              <a 
+                href="https://www.facebook.com/Alsabah.candies" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-3 py-4 px-6 bg-white/5 rounded-2xl hover:bg-white/20 hover:scale-[1.05] transition-all duration-300 group"
+              >
+                <Facebook size={24} className="text-white/70 group-hover:text-white" />
+                <span className="text-lg font-medium text-white/90 group-hover:text-white">فيسبوك</span>
               </a>
-              <a href="#" className="text-white/80 hover:text-white transition-colors flex items-center gap-2 font-light">
-                <Instagram size={20} /> إنستغرام
+              <a 
+                href="https://www.instagram.com/alsabah.candies" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-3 py-4 px-6 bg-white/5 rounded-2xl hover:bg-white/20 hover:scale-[1.05] transition-all duration-300 group"
+              >
+                <Instagram size={24} className="text-white/70 group-hover:text-white" />
+                <span className="text-lg font-medium text-white/90 group-hover:text-white">إنستغرام</span>
               </a>
             </div>
           </motion.div>

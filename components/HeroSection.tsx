@@ -35,17 +35,16 @@ export function HeroSection({ bannerUrl, imageUrl }: HeroSectionProps) {
       </div>
 
       {/* Content */}
-      <div className="relative z-10 container mx-auto px-6 text-center flex flex-col items-center">
+      <div className="relative z-10 container mx-auto px-6 text-center flex flex-col items-center gap-10">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.2 }}
-          className="mb-8"
         >
           <img 
             src="https://alsabahcandies.com/Materials/logo.sabah.svg" 
             alt="Alsabah Candies Logo" 
-            className="h-24 md:h-32 w-auto mx-auto drop-shadow-lg"
+            className="w-[260px] md:w-[180px] h-auto mx-auto drop-shadow-lg"
           />
         </motion.div>
         
@@ -53,7 +52,7 @@ export function HeroSection({ bannerUrl, imageUrl }: HeroSectionProps) {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.4 }}
-          className="text-4xl md:text-6xl lg:text-7xl font-black text-white mb-6 drop-shadow-md"
+          className="text-5xl md:text-6xl lg:text-7xl font-black text-white drop-shadow-md leading-tight"
         >
           حكاية مستمرة<br />منذ 1947
         </motion.h1>
@@ -65,7 +64,7 @@ export function HeroSection({ bannerUrl, imageUrl }: HeroSectionProps) {
         >
           <a 
             href="#products" 
-            className="inline-block px-10 py-4 bg-brand-red text-white font-bold uppercase tracking-widest text-sm rounded-full hover:bg-white hover:text-brand-red hover:scale-105 transition-all duration-300 shadow-lg"
+            className="inline-block px-12 py-5 bg-brand-red text-white font-bold uppercase tracking-widest text-sm rounded-full hover:bg-white hover:text-brand-red hover:scale-105 transition-all duration-300 shadow-lg"
           >
             استكشف المنتجات
           </a>

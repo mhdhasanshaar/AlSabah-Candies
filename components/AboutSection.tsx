@@ -1,7 +1,6 @@
 'use client';
 
 import { motion } from 'motion/react';
-import Image from 'next/image';
 
 interface AboutSectionProps {
   data?: {
@@ -63,12 +62,10 @@ export function AboutSection({ data }: AboutSectionProps) {
             className="relative"
           >
             <div className="aspect-[4/5] rounded-[2rem] overflow-hidden shadow-2xl relative">
-              <Image 
+              <img 
                 src={imageUrl} 
                 alt={title} 
-                fill
-                className="object-cover"
-                referrerPolicy="no-referrer"
+                className="w-full h-full object-cover"
               />
               <div className="absolute inset-0 bg-chocolate/10 mix-blend-overlay" />
             </div>

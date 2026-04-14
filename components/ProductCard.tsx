@@ -1,7 +1,6 @@
 'use client';
 
 import { motion } from 'motion/react';
-import Image from 'next/image';
 
 interface ProductCardProps {
   title: string;
@@ -27,12 +26,10 @@ export function ProductCard({ title, description, image, weight }: ProductCardPr
           className="relative w-full h-full drop-shadow-2xl"
         >
           {image ? (
-            <Image
+            <img
               src={image}
               alt={title}
-              fill
-              className="object-contain"
-              referrerPolicy="no-referrer"
+              className="w-full h-full object-contain"
             />
           ) : (
             <div className="w-full h-full bg-white/10 rounded-full flex items-center justify-center text-white/40">

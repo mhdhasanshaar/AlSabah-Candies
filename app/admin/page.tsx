@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
 import { 
   LayoutDashboard, 
@@ -12,7 +11,6 @@ import {
   Trash2, 
   LogOut, 
   ChevronRight,
-  Upload,
   Weight,
   Layers
 } from 'lucide-react';
@@ -24,7 +22,6 @@ export default function AdminPage() {
   const [password, setPassword] = useState('');
   const [activeTab, setActiveTab] = useState<TabType>('overview');
   const [message, setMessage] = useState({ text: '', type: '' });
-  const [isUploading, setIsUploading] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   // Data states
@@ -35,7 +32,7 @@ export default function AdminPage() {
   // Form states
   const [product, setProduct] = useState({ name: '', description: '', imageUrl: '' });
   const [otherProduct, setOtherProduct] = useState({ name: '', description: '', imageUrl: '', weight: '' });
-  const [bannerUrl, setBannerUrl] = useState('');
+  const [banner, setBanner] = useState({ imageUrl: '', videoUrl: '' });
   const [section, setSection] = useState({ 
     slug: 'about', 
     title: '', 
@@ -53,18 +50,29 @@ export default function AdminPage() {
   const fetchInitialData = async () => {
     setIsLoading(true);
     try {
-      const [pRes, oRes] = await Promise.all([
+      const [pRes, oRes, bRes, sRes] = await Promise.all([
         fetch('/api/products'),
-        fetch('/api/other-products')
+        fetch('/api/other-products'),
+        fetch('/api/banners'),
+        fetch('/api/sections')
       ]);
       const pData = await safeParse(pRes) || [];
       const oData = await safeParse(oRes) || [];
+      const bData = await safeParse(bRes) || [];
+      const sData = await safeParse(sRes) || [];
+
       setProducts(pData);
       setOtherProducts(oData);
+      
+      // If banners exist, set the first one for editing
+      if (bData.length > 0) {
+        setBanner({ imageUrl: bData[0].image_url || '', videoUrl: bData[0].banner_url || '' });
+      }
+
       setStats({
         products: pData.length,
         others: oData.length,
-        banners: 1
+        banners: bData.length
       });
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -87,46 +95,12 @@ export default function AdminPage() {
     try { return JSON.parse(text); } catch (e) { return null; }
   };
 
-  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>, type: 'product' | 'section' | 'banner' | 'other') => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    setIsUploading(true);
-    const formData = new FormData();
-    formData.append('image', file);
-    
-    const typeMap = {
-      product: 'products',
-      other: 'products',
-      section: 'sections',
-      banner: 'banners'
-    };
-    formData.append('type', typeMap[type]);
-
-    try {
-      const res = await fetch('/api/upload', {
-        method: 'POST',
-        body: formData,
-      });
-      const data = await safeParse(res);
-      if (data?.success) {
-        if (type === 'product') setProduct({ ...product, imageUrl: data.url });
-        else if (type === 'other') setOtherProduct({ ...otherProduct, imageUrl: data.url });
-        else if (type === 'section') setSection({ ...section, imageUrl: data.url });
-        else if (type === 'banner') setBannerUrl(data.url);
-        setMessage({ text: 'تم رفع الصورة بنجاح', type: 'success' });
-      } else {
-        setMessage({ text: 'فشل الرفع: ' + (data?.error || 'خطأ في السيرفر'), type: 'error' });
-      }
-    } catch (error) {
-      setMessage({ text: 'خطأ في الاتصال بالسيرفر', type: 'error' });
-    } finally {
-      setIsUploading(false);
-    }
-  };
-
   const handleAddProduct = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!product.imageUrl) {
+      setMessage({ text: 'يرجى إدخال رابط الصورة', type: 'error' });
+      return;
+    }
     try {
       const res = await fetch('/api/products/add', {
         method: 'POST',
@@ -152,6 +126,10 @@ export default function AdminPage() {
 
   const handleAddOtherProduct = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!otherProduct.imageUrl) {
+      setMessage({ text: 'يرجى إدخال رابط الصورة', type: 'error' });
+      return;
+    }
     try {
       const res = await fetch('/api/other-products/add', {
         method: 'POST',
@@ -182,12 +160,15 @@ export default function AdminPage() {
       const res = await fetch('/api/banners/add', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ banner_url: bannerUrl }),
+        body: JSON.stringify({ 
+          banner_url: banner.videoUrl,
+          image_url: banner.imageUrl 
+        }),
       });
       const data = await safeParse(res);
       if (data?.success) {
         setMessage({ text: 'تم تحديث البانر بنجاح', type: 'success' });
-        setBannerUrl('');
+        fetchInitialData();
       } else {
         setMessage({ text: 'فشل التحديث: ' + (data?.error || 'خطأ في الخادم'), type: 'error' });
       }
@@ -437,34 +418,40 @@ export default function AdminPage() {
                   </div>
                   
                   <div className="space-y-6">
-                    <label className="block text-sm font-bold text-chocolate/70 mb-2 mr-1">صورة المنتج</label>
-                    <div className="relative group">
-                      <div className={`relative h-64 rounded-[2rem] border-2 border-dashed transition-all flex flex-col items-center justify-center overflow-hidden ${isUploading ? 'border-brand-red animate-pulse' : 'border-gray-200 group-hover:border-brand-red/40 bg-gray-50 group-hover:bg-white'}`}>
-                        {(activeTab === 'add-product' ? product.imageUrl : otherProduct.imageUrl) ? (
-                          <div className="relative w-full h-full p-4">
-                            <Image src={activeTab === 'add-product' ? product.imageUrl : otherProduct.imageUrl} alt="Preview" fill className="object-contain" />
-                            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                              <p className="text-white font-bold flex items-center gap-2">
-                                <Upload size={20} />
-                                تغيير الصورة
-                              </p>
+                    <label className="block text-sm font-bold text-chocolate/70 mb-2 mr-1">رابط صورة المنتج</label>
+                    <div className="space-y-4">
+                      <input 
+                        type="text" 
+                        required
+                        placeholder="https://example.com/image.png أو /uploads/image.png"
+                        className="w-full px-5 py-4 rounded-2xl bg-gray-50 border-transparent focus:bg-white focus:border-brand-red/30 focus:ring-4 focus:ring-brand-red/5 transition-all outline-none"
+                        value={activeTab === 'add-product' ? product.imageUrl : otherProduct.imageUrl}
+                        onChange={(e) => activeTab === 'add-product' ? setProduct({ ...product, imageUrl: e.target.value }) : setOtherProduct({ ...otherProduct, imageUrl: e.target.value })}
+                      />
+                      
+                      <div className="relative group">
+                        <div className="relative h-64 rounded-[2rem] border-2 border-dashed border-gray-200 bg-gray-50 flex flex-col items-center justify-center overflow-hidden">
+                          {(activeTab === 'add-product' ? product.imageUrl : otherProduct.imageUrl) ? (
+                            <div className="relative w-full h-full p-4">
+                              <img 
+                                src={activeTab === 'add-product' ? product.imageUrl : otherProduct.imageUrl} 
+                                alt="Preview" 
+                                className="w-full h-full object-contain"
+                                onError={(e) => {
+                                  (e.target as HTMLImageElement).src = 'https://picsum.photos/seed/broken/400/400?blur=10';
+                                }}
+                              />
                             </div>
-                          </div>
-                        ) : (
-                          <div className="text-center p-8">
-                            <div className="w-16 h-16 bg-white rounded-2xl shadow-sm flex items-center justify-center mx-auto mb-4 text-chocolate/20 group-hover:text-brand-red transition-colors">
-                              <Upload size={32} />
+                          ) : (
+                            <div className="text-center p-8">
+                              <div className="w-16 h-16 bg-white rounded-2xl shadow-sm flex items-center justify-center mx-auto mb-4 text-chocolate/20">
+                                <ImageIcon size={32} />
+                              </div>
+                              <p className="text-chocolate/40 font-medium">سيظهر استعراض الصورة هنا</p>
+                              <p className="text-[10px] text-chocolate/20 mt-2 uppercase tracking-widest font-bold">أدخل رابط الصورة في الحقل أعلاه</p>
                             </div>
-                            <p className="text-chocolate/40 font-medium">اسحب الصورة هنا أو اضغط للرفع</p>
-                            <p className="text-[10px] text-chocolate/20 mt-2 uppercase tracking-widest font-bold">PNG, JPG up to 5MB</p>
-                          </div>
-                        )}
-                        <input 
-                          type="file" 
-                          accept="image/*"
-                          className="absolute inset-0 opacity-0 cursor-pointer"
-                          onChange={(e) => handleImageUpload(e, activeTab === 'add-product' ? 'product' : 'other')}
-                        />
+                          )}
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -472,20 +459,11 @@ export default function AdminPage() {
 
                 <div className="pt-6 border-t border-gray-50">
                   <button 
-                    disabled={!(activeTab === 'add-product' ? product.imageUrl : otherProduct.imageUrl) || isUploading}
+                    disabled={!(activeTab === 'add-product' ? product.imageUrl : otherProduct.imageUrl)}
                     className="w-full py-5 bg-chocolate text-white rounded-[1.5rem] font-bold text-lg hover:shadow-xl hover:shadow-chocolate/20 transition-all disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.99] flex items-center justify-center gap-3"
                   >
-                    {isUploading ? (
-                      <>
-                        <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                        <span>جاري الرفع...</span>
-                      </>
-                    ) : (
-                      <>
-                        <PlusCircle size={22} />
-                        <span>حفظ المنتج ونشره فوراً</span>
-                      </>
-                    )}
+                    <PlusCircle size={22} />
+                    <span>حفظ المنتج ونشره فوراً</span>
                   </button>
                 </div>
               </form>
@@ -516,39 +494,62 @@ export default function AdminPage() {
                 <div className="grid md:grid-cols-2 gap-10">
                   <div className="space-y-6">
                     <div>
-                      <label className="block text-sm font-bold text-chocolate/70 mb-2 mr-1">رابط البانر المباشر</label>
+                      <label className="block text-sm font-bold text-chocolate/70 mb-2 mr-1">رابط صورة البانر (Poster)</label>
                       <input 
                         type="text" 
                         required
-                        placeholder="https://..."
+                        placeholder="https://... أو /uploads/banner.jpg"
                         className="w-full px-5 py-4 rounded-2xl bg-gray-50 border-transparent focus:bg-white focus:border-brand-red/30 focus:ring-4 focus:ring-brand-red/5 transition-all outline-none"
-                        value={bannerUrl}
-                        onChange={(e) => setBannerUrl(e.target.value)}
+                        value={banner.imageUrl}
+                        onChange={(e) => setBanner({ ...banner, imageUrl: e.target.value })}
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-bold text-chocolate/70 mb-2 mr-1">رابط فيديو البانر (اختياري)</label>
+                      <input 
+                        type="text" 
+                        placeholder="https://... أو /uploads/banner.mp4"
+                        className="w-full px-5 py-4 rounded-2xl bg-gray-50 border-transparent focus:bg-white focus:border-brand-red/30 focus:ring-4 focus:ring-brand-red/5 transition-all outline-none"
+                        value={banner.videoUrl}
+                        onChange={(e) => setBanner({ ...banner, videoUrl: e.target.value })}
                       />
                     </div>
                     <div className="p-6 bg-brand-red/5 rounded-2xl border border-brand-red/10">
                       <h4 className="font-bold text-brand-red mb-2 text-sm">نصيحة تقنية</h4>
                       <p className="text-xs text-chocolate/60 leading-relaxed">
-                        يفضل استخدام فيديوهات بصيغة MP4 وبحجم صغير (أقل من 5 ميجا) لضمان سرعة تحميل الموقع. يمكنك رفع الملف من اليمين وسيتم توليد الرابط تلقائياً.
+                        يفضل استخدام فيديوهات بصيغة MP4 وبحجم صغير لضمان سرعة تحميل الموقع. إذا لم يتوفر فيديو، سيتم استخدام الصورة فقط.
                       </p>
                     </div>
                   </div>
                   
                   <div className="space-y-6">
-                    <label className="block text-sm font-bold text-chocolate/70 mb-2 mr-1">رفع ملف جديد (فيديو أو صورة)</label>
-                    <div className="relative h-48 rounded-[2rem] border-2 border-dashed border-gray-200 bg-gray-50 flex flex-col items-center justify-center overflow-hidden hover:border-brand-red/40 transition-all group">
-                      <div className="text-center p-4">
-                        <div className="w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center mx-auto mb-3 text-chocolate/20 group-hover:text-brand-red transition-colors">
-                          <Upload size={24} />
+                    <label className="block text-sm font-bold text-chocolate/70 mb-2 mr-1">استعراض البانر</label>
+                    <div className="relative h-64 rounded-[2rem] border-2 border-dashed border-gray-200 bg-gray-50 flex flex-col items-center justify-center overflow-hidden">
+                      {banner.videoUrl ? (
+                        <video 
+                          key={banner.videoUrl}
+                          src={banner.videoUrl} 
+                          controls 
+                          className="w-full h-full object-cover"
+                          poster={banner.imageUrl}
+                        />
+                      ) : banner.imageUrl ? (
+                        <img 
+                          src={banner.imageUrl} 
+                          alt="Banner Preview" 
+                          className="w-full h-full object-cover"
+                          onError={(e) => {
+                            (e.target as HTMLImageElement).src = 'https://picsum.photos/seed/broken/800/400?blur=10';
+                          }}
+                        />
+                      ) : (
+                        <div className="text-center p-4">
+                          <div className="w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center mx-auto mb-3 text-chocolate/20">
+                            <ImageIcon size={24} />
+                          </div>
+                          <p className="text-xs text-chocolate/40 font-bold">سيظهر استعراض البانر هنا</p>
                         </div>
-                        <p className="text-xs text-chocolate/40 font-bold">اضغط للرفع</p>
-                      </div>
-                      <input 
-                        type="file" 
-                        accept="image/*,video/*"
-                        className="absolute inset-0 opacity-0 cursor-pointer"
-                        onChange={(e) => handleImageUpload(e, 'banner')}
-                      />
+                      )}
                     </div>
                   </div>
                 </div>
@@ -609,26 +610,37 @@ export default function AdminPage() {
                   </div>
                   
                   <div className="space-y-6">
-                    <label className="block text-sm font-bold text-chocolate/70 mb-2 mr-1">بوستر القسم</label>
-                    <div className="relative h-72 rounded-[2rem] border-2 border-dashed border-gray-200 bg-gray-50 flex flex-col items-center justify-center overflow-hidden hover:border-brand-red/40 transition-all group">
-                      {section.imageUrl ? (
-                        <div className="relative w-full h-full p-4">
-                          <Image src={section.imageUrl} alt="Preview" fill className="object-contain" />
-                        </div>
-                      ) : (
-                        <div className="text-center p-4">
-                          <div className="w-16 h-16 bg-white rounded-2xl shadow-sm flex items-center justify-center mx-auto mb-4 text-chocolate/20">
-                            <ImageIcon size={32} />
-                          </div>
-                          <p className="text-xs text-chocolate/40 font-bold">اضغط لرفع بوستر</p>
-                        </div>
-                      )}
+                    <label className="block text-sm font-bold text-chocolate/70 mb-2 mr-1">رابط بوستر القسم</label>
+                    <div className="space-y-4">
                       <input 
-                        type="file" 
-                        accept="image/*"
-                        className="absolute inset-0 opacity-0 cursor-pointer"
-                        onChange={(e) => handleImageUpload(e, 'section')}
+                        type="text" 
+                        required
+                        placeholder="https://... أو /uploads/about.jpg"
+                        className="w-full px-5 py-4 rounded-2xl bg-gray-50 border-transparent focus:bg-white focus:border-brand-red/30 focus:ring-4 focus:ring-brand-red/5 transition-all outline-none"
+                        value={section.imageUrl}
+                        onChange={(e) => setSection({ ...section, imageUrl: e.target.value })}
                       />
+                      <div className="relative h-72 rounded-[2rem] border-2 border-dashed border-gray-200 bg-gray-50 flex flex-col items-center justify-center overflow-hidden">
+                        {section.imageUrl ? (
+                          <div className="relative w-full h-full p-4">
+                            <img 
+                              src={section.imageUrl} 
+                              alt="Section Preview" 
+                              className="w-full h-full object-contain"
+                              onError={(e) => {
+                                (e.target as HTMLImageElement).src = 'https://picsum.photos/seed/broken/600/400?blur=10';
+                              }}
+                            />
+                          </div>
+                        ) : (
+                          <div className="text-center p-4">
+                            <div className="w-16 h-16 bg-white rounded-2xl shadow-sm flex items-center justify-center mx-auto mb-4 text-chocolate/20">
+                              <ImageIcon size={32} />
+                            </div>
+                            <p className="text-xs text-chocolate/40 font-bold">سيظهر استعراض البوستر هنا</p>
+                          </div>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -704,7 +716,14 @@ function ProductTable({ title, data, onDelete, isLoading, hasWeight = false }: {
                 <td className="px-8 py-5">
                   <div className="flex items-center gap-4">
                     <div className="relative w-14 h-14 bg-cream rounded-xl overflow-hidden border border-gray-100 p-1">
-                      <Image src={item.image_url} alt={item.name} fill className="object-contain" />
+                      <img 
+                        src={item.image_url} 
+                        alt={item.name} 
+                        className="w-full h-full object-contain"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).src = 'https://picsum.photos/seed/broken/50/50?blur=5';
+                        }}
+                      />
                     </div>
                     <span className="font-bold text-chocolate">{item.name}</span>
                   </div>

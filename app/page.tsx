@@ -14,7 +14,7 @@ import { Product } from '@/lib/store';
 export default function Home() {
   const [products, setProducts] = useState<Product[]>([]);
   const [otherProducts, setOtherProducts] = useState<any[]>([]);
-  const [banner, setBanner] = useState('');
+  const [banner, setBanner] = useState({ videoUrl: '', imageUrl: '' });
   const [sections, setSections] = useState<any>({});
   const [isLoading, setIsLoading] = useState(true);
 
@@ -30,7 +30,7 @@ export default function Home() {
         
         let prodData = [];
         let otherProdData = [];
-        let bannerData = { banner: '' };
+        let bannerData = [];
         let sectionsData = {};
 
         // Helper to safely parse JSON
@@ -46,12 +46,19 @@ export default function Home() {
 
         prodData = await safeParse(prodRes) || [];
         otherProdData = await safeParse(otherProdRes) || [];
-        bannerData = await safeParse(bannerRes) || { banner: '' };
+        bannerData = await safeParse(bannerRes) || [];
         sectionsData = await safeParse(sectionsRes) || {};
         
         setProducts(Array.isArray(prodData) ? prodData : []);
         setOtherProducts(Array.isArray(otherProdData) ? otherProdData : []);
-        setBanner(bannerData.banner || '');
+        
+        if (Array.isArray(bannerData) && bannerData.length > 0) {
+          setBanner({ 
+            videoUrl: bannerData[0].banner_url || '', 
+            imageUrl: bannerData[0].image_url || '' 
+          });
+        }
+        
         setSections(sectionsData || {});
       } catch (error) {
         console.error('Error fetching dynamic data:', error);
@@ -66,7 +73,7 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-cream">
       <Navbar />
-      <HeroSection bannerUrl={banner} />
+      <HeroSection bannerUrl={banner.videoUrl} imageUrl={banner.imageUrl} />
       <AboutSection data={sections['about']} />
       <ProductsSection products={products} />
       <PackagingSection />

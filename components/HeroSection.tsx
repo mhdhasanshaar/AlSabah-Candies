@@ -1,28 +1,35 @@
 'use client';
 
 import { motion } from 'motion/react';
-import Image from 'next/image';
 
 interface HeroSectionProps {
   bannerUrl: string;
+  imageUrl?: string;
 }
 
-export function HeroSection({ bannerUrl }: HeroSectionProps) {
+export function HeroSection({ bannerUrl, imageUrl }: HeroSectionProps) {
   return (
     <section className="relative h-screen w-full overflow-hidden flex items-center justify-center">
-      {/* Video Background */}
+      {/* Media Background */}
       <div className="absolute inset-0 z-0">
-        {bannerUrl && (
+        {bannerUrl ? (
           <video 
             autoPlay 
             muted 
             loop 
             playsInline
             className="w-full h-full object-cover"
+            poster={imageUrl}
           >
             <source src={bannerUrl} type="video/mp4" />
           </video>
-        )}
+        ) : imageUrl ? (
+          <img 
+            src={imageUrl} 
+            alt="Hero Banner" 
+            className="w-full h-full object-cover"
+          />
+        ) : null}
         {/* Gradient Overlay for readability */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/20 to-cream/90" />
       </div>
@@ -35,13 +42,10 @@ export function HeroSection({ bannerUrl }: HeroSectionProps) {
           transition={{ duration: 1, delay: 0.2 }}
           className="mb-8"
         >
-          <Image 
+          <img 
             src="https://alsabahcandies.com/Materials/logo.sabah.svg" 
             alt="Alsabah Candies Logo" 
-            width={200}
-            height={100}
             className="h-24 md:h-32 w-auto mx-auto drop-shadow-lg"
-            referrerPolicy="no-referrer"
           />
         </motion.div>
         

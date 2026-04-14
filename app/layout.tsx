@@ -5,27 +5,27 @@ import './globals.css';
 const itfRayatar = localFont({
   src: [
     {
-      path: '../public/fonts/ITFRAYATAR-LIGHT.woff',
+      path: './fonts/ITFRAYATAR-LIGHT.woff',
       weight: '300',
       style: 'normal',
     },
     {
-      path: '../public/fonts/ITFRAYATAR-REGULAR.woff',
+      path: './fonts/ITFRAYATAR-REGULAR.woff',
       weight: '400',
       style: 'normal',
     },
     {
-      path: '../public/fonts/ITFRAYATAR-MEDIUM.woff',
+      path: './fonts/ITFRAYATAR-MEDIUM.woff',
       weight: '500',
       style: 'normal',
     },
     {
-      path: '../public/fonts/ITFRAYATAR-BOLD.woff',
+      path: './fonts/ITFRAYATAR-BOLD.woff',
       weight: '700',
       style: 'normal',
     },
     {
-      path: '../public/fonts/ITFRAYATAR-BLACK.woff',
+      path: './fonts/ITFRAYATAR-BLACK.woff',
       weight: '900',
       style: 'normal',
     },

@@ -3,6 +3,12 @@ import cloudinary from '@/lib/cloudinary';
 
 export async function POST(req: NextRequest) {
   try {
+    // Check if Cloudinary is configured
+    if (!process.env.CLOUDINARY_CLOUD_NAME || !process.env.CLOUDINARY_API_KEY || !process.env.CLOUDINARY_API_SECRET) {
+      console.error('Cloudinary environment variables are missing');
+      return NextResponse.json({ error: 'Cloudinary is not configured on the server' }, { status: 500 });
+    }
+
     const formData = await req.formData();
     const file = formData.get('image') as File;
     const type = formData.get('type') as string; // products, sections, banners
@@ -15,23 +21,31 @@ export async function POST(req: NextRequest) {
     const buffer = Buffer.from(arrayBuffer);
 
     return new Promise<NextResponse>((resolve) => {
-      cloudinary.uploader.upload_stream(
+      const uploadStream = cloudinary.uploader.upload_stream(
         {
           folder: `alsabah/${type || 'general'}`,
           resource_type: 'auto',
         },
         (error, result) => {
           if (error) {
-            console.error('Cloudinary upload error:', error);
-            resolve(NextResponse.json({ error: 'Upload failed' }, { status: 500 }));
+            console.error('Cloudinary upload error details:', error);
+            resolve(NextResponse.json({ 
+              error: 'Upload failed', 
+              details: error.message || 'Unknown Cloudinary error' 
+            }, { status: 500 }));
           } else {
             resolve(NextResponse.json({ success: true, url: result?.secure_url }));
           }
         }
-      ).end(buffer);
+      );
+      
+      uploadStream.end(buffer);
     });
-  } catch (error) {
+  } catch (error: any) {
     console.error('API Error:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    return NextResponse.json({ 
+      error: 'Internal server error', 
+      details: error.message || 'Unknown error' 
+    }, { status: 500 });
   }
 }

@@ -37,8 +37,13 @@ export const metadata: Metadata = {
   title: 'سكاكر الصباح | منذ 1947',
   description: 'موقع إلكتروني حديث وفاخر لعلامة تجارية رائدة في صناعة الحلويات.',
   icons: {
-    icon: 'https://alsabahcandies.com/Test/logo.sabah.svg',
-    apple: 'https://alsabahcandies.com/Test/logo.sabah.svg',
+    icon: [
+      { url: 'https://alsabahcandies.com/Test/logo.sabah.svg', type: 'image/svg+xml' },
+    ],
+    shortcut: ['https://alsabahcandies.com/Test/logo.sabah.svg'],
+    apple: [
+      { url: 'https://alsabahcandies.com/Test/logo.sabah.svg' },
+    ],
   },
 };
 

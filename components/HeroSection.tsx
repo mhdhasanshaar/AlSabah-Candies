@@ -44,7 +44,7 @@ export function HeroSection({ bannerUrl, imageUrl }: HeroSectionProps) {
           <img 
             src="https://alsabahcandies.com/Materials/logo.sabah.svg" 
             alt="Alsabah Candies Logo" 
-            className="w-[260px] md:w-[180px] h-auto mx-auto drop-shadow-lg"
+            className="w-[160px] md:w-[200px] h-auto mx-auto drop-shadow-lg"
           />
         </motion.div>
         

@@ -10,7 +10,7 @@ const packagingOptions = [
 
 export function PackagingSection() {
   return (
-    <section id="packaging" className="py-24 md:py-32 bg-white relative overflow-hidden">
+    <section id="packaging" className="py-24 md:py-32 bg-white bg-pattern-light relative overflow-hidden">
       {/* Decorative Background Elements */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full opacity-[0.03] pointer-events-none">
         <div className="absolute top-10 left-10 w-64 h-64 border border-chocolate rounded-full" />

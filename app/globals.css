@@ -43,11 +43,49 @@
 }
 
 .bg-pattern-light {
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.bg-pattern-light::before {
+  content: "";
+  position: absolute;
+  top: -10%;
+  left: -10%;
+  width: 120%;
+  height: 120%;
   background-image: linear-gradient(rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.6)), url('https://alsabahcandies.com/Materials/pattern-01.svg');
   background-repeat: repeat;
   background-size: 400px;
   background-position: center;
-  background-attachment: fixed;
+  z-index: -1;
+  pointer-events: none;
+  animation: liquid-wave 20s ease-in-out infinite;
+  will-change: transform;
+  opacity: 1;
+}
+
+@keyframes liquid-wave {
+  0%, 100% {
+    transform: translate(0, 0) scale(1) rotate(0deg);
+  }
+  33% {
+    transform: translate(15px, 20px) scale(1.04) rotate(1deg);
+  }
+  66% {
+    transform: translate(-10px, 10px) scale(1.02) rotate(-1deg);
+  }
+}
+
+@keyframes liquidMove {
+  0% { transform: translate(0px, 0px) scale(1); }
+  50% { transform: translate(10px, -10px) scale(1.05); }
+  100% { transform: translate(0px, 0px) scale(1); }
+}
+
+.animate-liquid {
+  animation: liquidMove 15s ease-in-out infinite;
 }
 
 .bg-footer-gradient {

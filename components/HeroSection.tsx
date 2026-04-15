@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { motion } from 'motion/react';
 
 interface HeroSectionProps {
@@ -8,30 +9,44 @@ interface HeroSectionProps {
 }
 
 export function HeroSection({ bannerUrl, imageUrl }: HeroSectionProps) {
+  const [isVideoLoaded, setIsVideoLoaded] = useState(false);
+
   return (
-    <section className="relative h-screen w-full overflow-hidden flex items-center justify-center">
+    <section className="relative h-screen w-full overflow-hidden flex items-center justify-center bg-[#0a0a0a]">
       {/* Media Background */}
       <div className="absolute inset-0 z-0">
-        {bannerUrl ? (
-          <video 
+        {imageUrl && (
+          <img 
+            src={imageUrl} 
+            alt="Hero Banner Poster" 
+            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${isVideoLoaded ? 'opacity-0' : 'opacity-100'}`}
+          />
+        )}
+        {bannerUrl && (
+          <motion.video 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: isVideoLoaded ? 1 : 0 }}
+            transition={{ duration: 2, ease: "easeOut" }}
+            onLoadedData={() => setIsVideoLoaded(true)}
             autoPlay 
             muted 
             loop 
             playsInline
             className="w-full h-full object-cover"
-            poster={imageUrl}
           >
             <source src={bannerUrl} type="video/mp4" />
-          </video>
-        ) : imageUrl ? (
+          </motion.video>
+        )}
+        {!bannerUrl && imageUrl && (
           <img 
             src={imageUrl} 
             alt="Hero Banner" 
             className="w-full h-full object-cover"
           />
-        ) : null}
+        )}
+        
         {/* Gradient Overlay for readability */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/20 to-cream/90" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/20 to-white" />
       </div>
 
       {/* Content */}
@@ -52,7 +67,7 @@ export function HeroSection({ bannerUrl, imageUrl }: HeroSectionProps) {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.4 }}
-          className="text-5xl md:text-6xl lg:text-7xl font-black text-white drop-shadow-md leading-tight"
+          className="text-5xl md:text-6xl lg:text-7xl font-black text-white drop-shadow-[0_4px_15px_rgba(0,0,0,0.6)] leading-tight"
         >
           حكاية مستمرة<br />منذ 1947
         </motion.h1>

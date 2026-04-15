@@ -19,11 +19,11 @@ export function ProductCard({ title, description, image, weight }: ProductCardPr
       className="relative pt-32 pb-12 group h-full flex flex-col"
     >
       {/* Floating Product Image */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 z-20 w-64 h-64 md:w-72 md:h-72">
+      <div className="absolute -top-10 md:-top-16 left-1/2 -translate-x-1/2 z-20 w-72 h-72 md:w-80 md:h-80">
         <motion.div
-          whileHover={{ scale: 1.05 }}
+          whileHover={{ scale: 1.15 }}
           transition={{ duration: 0.4 }}
-          className="relative w-full h-full drop-shadow-2xl"
+          className="relative w-full h-full drop-shadow-2xl scale-110"
         >
           {image ? (
             <img
@@ -40,8 +40,13 @@ export function ProductCard({ title, description, image, weight }: ProductCardPr
       </div>
 
       {/* Card Container */}
-      <div className="relative flex-grow bg-[#E8C999] rounded-[3rem] px-8 pt-40 pb-12 shadow-lg transition-all duration-500 group-hover:shadow-2xl group-hover:-translate-y-2 overflow-hidden flex flex-col items-center">
+      <div className="relative flex-grow bg-[#E8C999] rounded-[3rem] px-8 pt-32 pb-12 shadow-lg transition-all duration-500 group-hover:shadow-2xl group-hover:-translate-y-2 overflow-hidden flex flex-col items-center">
         
+        {/* Subtle Liquid Effect Background */}
+        <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+          <div className="absolute -inset-[50%] bg-[radial-gradient(circle_at_30%_30%,rgba(255,255,255,0.25),transparent_60%)] animate-liquid opacity-50" />
+        </div>
+
         {/* Brand Identity SVG (Sun/Swirl) */}
         <div className="absolute top-4 left-1/2 -translate-x-1/2 w-[120%] h-auto opacity-30 pointer-events-none">
           <svg viewBox="0 0 300 300" className="w-full h-full">
@@ -70,12 +75,16 @@ export function ProductCard({ title, description, image, weight }: ProductCardPr
         </div>
         
         <div className="flex flex-col items-center text-center space-y-6 relative z-10 flex-grow">
-          {/* Title Badge */}
-          <div className="bg-[#E31E24] px-10 py-4 rounded-full shadow-md">
-            <h4 className="text-white text-2xl font-bold leading-none">
+          {/* Title Badge - Premium Style */}
+          <motion.div 
+            whileHover={{ scale: 1.05 }}
+            transition={{ duration: 0.3 }}
+            className="bg-gradient-to-b from-[#ff2d2d] to-[#c40000] px-10 py-4 rounded-full shadow-[0_8px_20px_rgba(0,0,0,0.2)] shadow-[inset_0_2px_6px_rgba(0,0,0,0.25)] hover:shadow-[0_0_15px_rgba(255,50,50,0.5)] transition-all duration-300 -mt-8 cursor-default"
+          >
+            <h4 className="text-white text-2xl font-bold leading-none tracking-tight">
               {title}
             </h4>
-          </div>
+          </motion.div>
 
           {/* Weight Badge (Optional) */}
           {weight && (

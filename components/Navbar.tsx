@@ -38,21 +38,25 @@ export function Navbar() {
         </Link>
         
         <div className="hidden md:flex items-center gap-8">
-          <NavLink href="#about">قصتنا</NavLink>
-          <NavLink href="#products">منتجاتنا</NavLink>
-          <NavLink href="#packaging">التعبئة والتغليف</NavLink>
-          <NavLink href="#contact">تواصل معنا</NavLink>
+          <NavLink href="#about" scrolled={scrolled}>قصتنا</NavLink>
+          <NavLink href="#products" scrolled={scrolled}>منتجاتنا</NavLink>
+          <NavLink href="#packaging" scrolled={scrolled}>التعبئة والتغليف</NavLink>
+          <NavLink href="#contact" scrolled={scrolled}>تواصل معنا</NavLink>
         </div>
       </div>
     </motion.nav>
   );
 }
 
-function NavLink({ href, children }: { href: string; children: React.ReactNode }) {
+function NavLink({ href, children, scrolled }: { href: string; children: React.ReactNode; scrolled: boolean }) {
   return (
     <Link 
       href={href} 
-      className="text-sm uppercase tracking-widest font-medium text-chocolate/80 hover:text-chocolate transition-colors relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-[1px] after:bg-chocolate after:transition-all hover:after:w-full"
+      className={`text-sm uppercase tracking-widest font-medium transition-colors duration-300 relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-[1px] after:transition-all hover:after:w-full ${
+        scrolled 
+          ? 'text-chocolate/80 hover:text-chocolate after:bg-chocolate' 
+          : 'text-[#ffefe3] hover:text-white after:bg-[#ffefe3]'
+      }`}
     >
       {children}
     </Link>

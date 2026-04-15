@@ -88,6 +88,10 @@
   animation: liquidMove 15s ease-in-out infinite;
 }
 
+.perspective-1000 {
+  perspective: 1000px;
+}
+
 .bg-footer-gradient {
   background-color: #4A0000;
   position: relative;

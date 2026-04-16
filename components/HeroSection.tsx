@@ -38,6 +38,7 @@ export function HeroSection({ bannerUrl, imageUrl }: HeroSectionProps) {
             animate={{ opacity: isImageLoaded ? (isVideoLoaded ? 0 : 1) : 0 }}
             transition={{ duration: 1.5, ease: "easeInOut" }}
             className="absolute inset-0 w-full h-full object-cover"
+            referrerPolicy="no-referrer"
           />
         )}
 

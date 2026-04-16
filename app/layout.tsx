@@ -38,11 +38,11 @@ export const metadata: Metadata = {
   description: 'موقع إلكتروني حديث وفاخر لعلامة تجارية رائدة في صناعة الحلويات.',
   icons: {
     icon: [
-      { url: 'https://alsabahcandies.com/Test/logo.sabah.svg', type: 'image/svg+xml' },
+      { url: 'https://alsabahcandies.com/Materials/logo.sabah.svg', type: 'image/svg+xml' },
     ],
-    shortcut: ['https://alsabahcandies.com/Test/logo.sabah.svg'],
+    shortcut: ['https://alsabahcandies.com/Materials/logo.sabah.svg'],
     apple: [
-      { url: 'https://alsabahcandies.com/Test/logo.sabah.svg' },
+      { url: 'https://alsabahcandies.com/Materials/logo.sabah.svg' },
     ],
   },
 };

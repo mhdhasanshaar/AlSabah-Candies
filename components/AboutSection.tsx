@@ -69,6 +69,7 @@ export function AboutSection({ data }: AboutSectionProps) {
                 src={encodeSafeUrl(imageUrl)} 
                 alt={title} 
                 className="w-full h-full object-cover"
+                referrerPolicy="no-referrer"
               />
               <div className="absolute inset-0 bg-chocolate/10 mix-blend-overlay" />
             </div>

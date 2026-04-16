@@ -75,6 +75,7 @@ export function ProductCard({ title, description, image, weight }: ProductCardPr
               src={encodeSafeUrl(image)}
               alt={title}
               className="w-full h-full object-contain"
+              referrerPolicy="no-referrer"
             />
           ) : (
             <div className="w-full h-full bg-white/10 rounded-full flex items-center justify-center text-white/40">
@@ -104,17 +105,17 @@ export function ProductCard({ title, description, image, weight }: ProductCardPr
           }}
           transition={{
             rotate: {
-              duration: 60,
+              duration: 30,
               repeat: Infinity,
               ease: "linear"
             },
             scaleX: {
-              duration: 15,
+              duration: 8,
               repeat: Infinity,
               ease: "easeInOut"
             },
             scaleY: {
-              duration: 18,
+              duration: 10,
               repeat: Infinity,
               ease: "easeInOut"
             }
@@ -143,7 +144,7 @@ export function ProductCard({ title, description, image, weight }: ProductCardPr
               {/* Shine effect */}
               <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
               
-              <h4 className="text-white text-lg md:text-xl font-black leading-none tracking-tight px-4 whitespace-nowrap overflow-hidden text-ellipsis">
+              <h4 className="text-white text-lg md:text-xl font-black leading-tight px-4 whitespace-nowrap overflow-hidden text-ellipsis pt-[6px]">
                 {title}
               </h4>
             </div>

@@ -9,12 +9,10 @@ export function encodeSafeUrl(url: string | undefined): string {
   if (!url || !url.startsWith('http')) return url || '';
   
   try {
+    // The URL constructor handles encoding correctly without double encoding
     const urlObj = new URL(url);
-    // Encode only the pathname part to preserve protocol, hostname and search params
-    const encodedPath = urlObj.pathname.split('/').map(segment => encodeURIComponent(segment)).join('/');
-    return `${urlObj.protocol}//${urlObj.hostname}${encodedPath}${urlObj.search}`;
+    return urlObj.toString();
   } catch (e) {
-    // Fallback if URL is invalid
     return url;
   }
 }

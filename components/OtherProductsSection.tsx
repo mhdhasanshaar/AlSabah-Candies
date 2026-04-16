@@ -19,7 +19,7 @@ export function OtherProductsSection({ products }: OtherProductsSectionProps) {
   if (!products || products.length === 0) return null;
 
   return (
-    <section id="other-products" className="py-24 md:py-32 bg-cream bg-pattern-light relative overflow-hidden">
+    <section id="other-products" className="py-24 md:py-32 bg-white bg-pattern-light relative overflow-hidden">
       {/* Background Accents */}
       <div className="absolute top-0 right-0 w-96 h-96 bg-brand-red/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
       <div className="absolute bottom-0 left-0 w-96 h-96 bg-chocolate/5 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />

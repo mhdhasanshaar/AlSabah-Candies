@@ -12,8 +12,10 @@ import {
   LogOut, 
   ChevronRight,
   Weight,
-  Layers
+  Layers,
+  Lock
 } from 'lucide-react';
+import storeData from '@/data/store.json';
 
 type TabType = 'overview' | 'add-product' | 'add-other' | 'manage-products' | 'banners' | 'sections';
 
@@ -25,61 +27,31 @@ export default function AdminPage() {
   const [isLoading, setIsLoading] = useState(false);
 
   // Data states
-  const [products, setProducts] = useState<any[]>([]);
-  const [otherProducts, setOtherProducts] = useState<any[]>([]);
-  const [stats, setStats] = useState({ products: 0, others: 0, banners: 0 });
+  const [products, setProducts] = useState<any[]>(
+    storeData.products.map(p => ({ ...p, image_url: p.image }))
+  );
+  const [otherProducts, setOtherProducts] = useState<any[]>(storeData.other_products);
+  const [stats, setStats] = useState({ 
+    products: storeData.products.length, 
+    others: storeData.other_products.length, 
+    banners: 1 
+  });
 
   // Form states
   const [product, setProduct] = useState({ name: '', description: '', imageUrl: '' });
   const [otherProduct, setOtherProduct] = useState({ name: '', description: '', imageUrl: '', weight: '' });
-  const [banner, setBanner] = useState({ imageUrl: '', videoUrl: '' });
+  const [banner, setBanner] = useState({ imageUrl: storeData.banner_poster, videoUrl: storeData.banner });
   const [section, setSection] = useState({ 
     slug: 'about', 
-    title: '', 
-    subtitle: '', 
-    description: '', 
-    imageUrl: '' 
+    title: storeData.sections.about.title, 
+    subtitle: storeData.sections.about.subtitle, 
+    description: storeData.sections.about.description, 
+    imageUrl: storeData.sections.about.image_url 
   });
 
   useEffect(() => {
-    if (isAuthenticated) {
-      fetchInitialData();
-    }
+    // No longer needed to load static data here as it's initialized in state
   }, [isAuthenticated]);
-
-  const fetchInitialData = async () => {
-    setIsLoading(true);
-    try {
-      const [pRes, oRes, bRes, sRes] = await Promise.all([
-        fetch('/api/products'),
-        fetch('/api/other-products'),
-        fetch('/api/banners'),
-        fetch('/api/sections')
-      ]);
-      const pData = await safeParse(pRes) || [];
-      const oData = await safeParse(oRes) || [];
-      const bData = await safeParse(bRes) || [];
-      const sData = await safeParse(sRes) || [];
-
-      setProducts(pData);
-      setOtherProducts(oData);
-      
-      // If banners exist, set the first one for editing
-      if (bData.length > 0) {
-        setBanner({ imageUrl: bData[0].image_url || '', videoUrl: bData[0].banner_url || '' });
-      }
-
-      setStats({
-        products: pData.length,
-        others: oData.length,
-        banners: bData.length
-      });
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
@@ -90,134 +62,28 @@ export default function AdminPage() {
     }
   };
 
-  const safeParse = async (res: Response) => {
-    const text = await res.text();
-    try { return JSON.parse(text); } catch (e) { return null; }
-  };
-
-  const handleAddProduct = async (e: React.FormEvent) => {
+  const handleAddProduct = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!product.imageUrl) {
-      setMessage({ text: 'يرجى إدخال رابط الصورة', type: 'error' });
-      return;
-    }
-    try {
-      const res = await fetch('/api/products/add', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: product.name,
-          description: product.description,
-          image_url: product.imageUrl
-        }),
-      });
-      const data = await safeParse(res);
-      if (data?.success) {
-        setMessage({ text: 'تم إضافة المنتج بنجاح', type: 'success' });
-        setProduct({ name: '', description: '', imageUrl: '' });
-        fetchInitialData();
-      } else {
-        setMessage({ text: 'فشل الحفظ: ' + (data?.error || 'خطأ في الخادم'), type: 'error' });
-      }
-    } catch (error) {
-      setMessage({ text: 'خطأ في الاتصال بالخادم', type: 'error' });
-    }
+    setMessage({ text: 'هذه النسخة للعرض فقط. تم تعطيل عمليات الحفظ في النسخة الاستاتيكية.', type: 'error' });
   };
 
-  const handleAddOtherProduct = async (e: React.FormEvent) => {
+  const handleAddOtherProduct = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!otherProduct.imageUrl) {
-      setMessage({ text: 'يرجى إدخال رابط الصورة', type: 'error' });
-      return;
-    }
-    try {
-      const res = await fetch('/api/other-products/add', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: otherProduct.name,
-          description: otherProduct.description,
-          image_url: otherProduct.imageUrl,
-          weight: otherProduct.weight
-        }),
-      });
-      const data = await safeParse(res);
-      if (data?.success) {
-        setMessage({ text: 'تم إضافة المنتج الآخر بنجاح', type: 'success' });
-        setOtherProduct({ name: '', description: '', imageUrl: '', weight: '' });
-        fetchInitialData();
-      } else {
-        setMessage({ text: 'فشل الحفظ: ' + (data?.error || 'خطأ في الخادم'), type: 'error' });
-      }
-    } catch (error) {
-      setMessage({ text: 'خطأ في الاتصال بالخادم', type: 'error' });
-    }
+    setMessage({ text: 'هذه النسخة للعرض فقط. تم تعطيل عمليات الحفظ في النسخة الاستاتيكية.', type: 'error' });
   };
 
-  const handleAddBanner = async (e: React.FormEvent) => {
+  const handleAddBanner = (e: React.FormEvent) => {
     e.preventDefault();
-    try {
-      const res = await fetch('/api/banners/add', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          banner_url: banner.videoUrl,
-          image_url: banner.imageUrl 
-        }),
-      });
-      const data = await safeParse(res);
-      if (data?.success) {
-        setMessage({ text: 'تم تحديث البانر بنجاح', type: 'success' });
-        fetchInitialData();
-      } else {
-        setMessage({ text: 'فشل التحديث: ' + (data?.error || 'خطأ في الخادم'), type: 'error' });
-      }
-    } catch (error) {
-      setMessage({ text: 'خطأ في الاتصال بالخادم', type: 'error' });
-    }
+    setMessage({ text: 'هذه النسخة للعرض فقط. تم تعطيل عمليات الحفظ في النسخة الاستاتيكية.', type: 'error' });
   };
 
-  const handleUpdateSection = async (e: React.FormEvent) => {
+  const handleUpdateSection = (e: React.FormEvent) => {
     e.preventDefault();
-    try {
-      const res = await fetch('/api/sections/update', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          slug: section.slug,
-          title: section.title,
-          subtitle: section.subtitle,
-          description: section.description,
-          image_url: section.imageUrl
-        }),
-      });
-      const data = await safeParse(res);
-      if (data?.success) {
-        setMessage({ text: 'تم تحديث القسم بنجاح', type: 'success' });
-      } else {
-        setMessage({ text: 'فشل التحديث: ' + (data?.error || 'خطأ في الخادم'), type: 'error' });
-      }
-    } catch (error) {
-      setMessage({ text: 'خطأ في الاتصال بالخادم', type: 'error' });
-    }
+    setMessage({ text: 'هذه النسخة للعرض فقط. تم تعطيل عمليات الحفظ في النسخة الاستاتيكية.', type: 'error' });
   };
 
-  const handleDelete = async (id: number, type: 'main' | 'other') => {
-    if (!confirm('هل أنت متأكد من حذف هذا المنتج؟')) return;
-    try {
-      const res = await fetch('/api/products/delete', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id, type }),
-      });
-      const data = await safeParse(res);
-      if (data?.success) {
-        setMessage({ text: 'تم الحذف بنجاح', type: 'success' });
-        fetchInitialData();
-      }
-    } catch (error) {
-      setMessage({ text: 'خطأ في الحذف', type: 'error' });
-    }
+  const handleDelete = (id: number, type: 'main' | 'other') => {
+    setMessage({ text: 'هذه النسخة للعرض فقط. تم تعطيل عمليات الحذف في النسخة الاستاتيكية.', type: 'error' });
   };
 
   if (!isAuthenticated) {

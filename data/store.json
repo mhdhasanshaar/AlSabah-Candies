@@ -74,5 +74,29 @@
       "description": "سكاكر لذيذة المذاق بنكهات مستوحاة من الآيس كريم، متوفرة بنكهات الفريز، الأناناس والبطيخ الأصفر.",
       "image": "https://alsabahcandies.com/products/أيس-كريم.png"
     }
-  ]
+  ],
+  "other_products": [
+    {
+      "id": "o1",
+      "name": "مغلف توفي فواكه مشكل",
+      "description": "تشكيلة واسعة من نكهات الفواكه الطبيعية في مغلف عائلي كبير، مثالي للمشاركة.",
+      "image_url": "https://alsabahcandies.com/products/توفي-فواكه.png",
+      "weight": "500g"
+    },
+    {
+      "id": "o2",
+      "name": "مغلف كاندي حوامض",
+      "description": "مغلف كبير يحتوي على تشكيلة من الحوامض المنعشة بنكهات الكولا والليمون والتفاح.",
+      "image_url": "https://alsabahcandies.com/products/كاندي-الحوامض.png",
+      "weight": "400g"
+    }
+  ],
+  "sections": {
+    "about": {
+      "title": "أصالة المذاق منذ 1947",
+      "subtitle": "قصتنا",
+      "description": "بدأت رحلتنا في قلب دمشق، حيث الشغف بصناعة السكاكر والحلويات. على مدار عقود، حافظنا على الوصفات التقليدية مع دمج أحدث التقنيات لنقدم لكم مذاقاً لا يُنسى يجمع بين الماضي والحاضر.",
+      "image_url": "https://alsabahcandies.com/Materials/loop_banner_alsabah00.jpg"
+    }
+  }
 }

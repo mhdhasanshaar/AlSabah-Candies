@@ -2,6 +2,7 @@
 
 import { motion, useMotionValue, useSpring, useTransform } from 'motion/react';
 import React from 'react';
+import { encodeSafeUrl } from '@/lib/utils';
 
 interface ProductCardProps {
   title: string;
@@ -71,7 +72,7 @@ export function ProductCard({ title, description, image, weight }: ProductCardPr
         >
           {image ? (
             <img
-              src={image}
+              src={encodeSafeUrl(image)}
               alt={title}
               className="w-full h-full object-contain"
             />
@@ -129,17 +130,23 @@ export function ProductCard({ title, description, image, weight }: ProductCardPr
         
         <div 
           style={{ transform: "translateZ(30px)" }}
-          className="flex flex-col items-center text-center space-y-6 relative z-10 flex-grow"
+          className="flex flex-col items-center text-center space-y-6 relative z-10 flex-grow w-full"
         >
-          {/* Title Badge - Premium Style */}
+          {/* Title Badge - Premium Style (Unified Size & Auto-fit text) */}
           <motion.div 
             whileHover={{ scale: 1.05 }}
             transition={{ duration: 0.3 }}
-            className="bg-gradient-to-b from-[#ff2d2d] to-[#c40000] px-10 py-4 rounded-full shadow-[0_8px_20px_rgba(0,0,0,0.2)] shadow-[inset_0_2px_6px_rgba(0,0,0,0.25)] hover:shadow-[0_0_15px_rgba(255,50,50,0.5)] transition-all duration-300 -mt-8 cursor-default"
+            className="relative -mt-10 mb-2 cursor-default"
           >
-            <h4 className="text-white text-2xl font-bold leading-none tracking-tight">
-              {title}
-            </h4>
+            {/* The Badge Shape */}
+            <div className="bg-brand-red w-[240px] md:w-[280px] h-14 md:h-16 flex items-center justify-center rounded-[30px] md:rounded-[40px] shadow-[0_8px_25px_rgba(237,28,36,0.4)] border-b-4 border-[#b3141a] relative overflow-hidden group">
+              {/* Shine effect */}
+              <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+              
+              <h4 className="text-white text-lg md:text-xl font-black leading-none tracking-tight px-4 whitespace-nowrap overflow-hidden text-ellipsis">
+                {title}
+              </h4>
+            </div>
           </motion.div>
 
           {/* Weight Badge (Optional) */}

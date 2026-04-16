@@ -26,7 +26,9 @@ export function OtherProductsSection({ products }: OtherProductsSectionProps) {
 
       <div className="container mx-auto px-6 md:px-12 relative z-10">
         <div className="text-center max-w-2xl mx-auto mb-24">
-          <h2 className="text-sm uppercase tracking-[0.2em] text-brand-red mb-4 font-medium">تشكيلة متنوعة</h2>
+          <div className="inline-block px-4 py-1.5 rounded-full border border-brand-red/20 bg-brand-red/5 mb-6">
+            <h2 className="text-xs uppercase tracking-[0.2em] text-brand-red font-bold">تشكيلة متنوعة</h2>
+          </div>
           <h3 className="text-4xl md:text-5xl font-bold text-chocolate mb-6">
             منتجات أخرى فاخرة
           </h3>

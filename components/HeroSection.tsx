@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { motion } from 'motion/react';
+import { encodeSafeUrl } from '@/lib/utils';
 
 interface HeroSectionProps {
   bannerUrl: string;
@@ -30,7 +31,7 @@ export function HeroSection({ bannerUrl, imageUrl }: HeroSectionProps) {
         {/* Hero Image (Poster) */}
         {imageUrl && (
           <motion.img 
-            src={imageUrl} 
+            src={encodeSafeUrl(imageUrl)} 
             alt="Hero Banner Poster" 
             onLoad={() => setIsImageLoaded(true)}
             initial={{ opacity: 0 }}
@@ -53,7 +54,7 @@ export function HeroSection({ bannerUrl, imageUrl }: HeroSectionProps) {
             playsInline
             className="absolute inset-0 w-full h-full object-cover"
           >
-            <source src={bannerUrl} type="video/mp4" />
+            <source src={encodeSafeUrl(bannerUrl)} type="video/mp4" />
           </motion.video>
         )}
         

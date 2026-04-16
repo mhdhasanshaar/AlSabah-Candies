@@ -1,4 +1,4 @@
-{
+const data = {
   "banner": "https://alsabahcandies.com/Materials/loop_banner_alsabah.mp4",
   "banner_poster": "https://alsabahcandies.com/Materials/loop_banner_alsabah00.jpg",
   "products": [
@@ -92,4 +92,21 @@
       "image_url": "https://alsabahcandies.com/Materials/post-new.png"
     }
   }
+};
+
+function encodeUrl(url) {
+  if (!url.startsWith('http')) return url;
+  const urlParts = url.split('/');
+  const filename = urlParts.pop();
+  return urlParts.join('/') + '/' + encodeURIComponent(filename);
 }
+
+data.products.forEach(p => {
+  p.image = encodeUrl(p.image);
+});
+
+data.other_products.forEach(p => {
+  p.image_url = encodeUrl(p.image_url);
+});
+
+console.log(JSON.stringify(data, null, 2));

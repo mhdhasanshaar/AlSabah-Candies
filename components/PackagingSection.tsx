@@ -10,29 +10,27 @@ const packagingOptions = [
 
 export function PackagingSection() {
   return (
-    <section id="packaging" className="py-24 md:py-32 bg-white bg-pattern-light relative overflow-hidden">
-      {/* Decorative Background Elements */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full opacity-[0.03] pointer-events-none">
-        <div className="absolute top-10 left-10 w-64 h-64 border border-chocolate rounded-full" />
-        <div className="absolute bottom-10 right-10 w-96 h-96 border border-chocolate rounded-full" />
-      </div>
-
+    <section id="packaging" className="py-24 md:py-32 bg-footer-gradient text-white relative overflow-hidden">
+      {/* Animated Fluid Blobs for consistency with ContactSection */}
+      <div className="fluid-blob fluid-blob-1 opacity-40" />
+      <div className="fluid-blob fluid-blob-2 opacity-40" />
+      
       <div className="container mx-auto px-6 md:px-12 relative z-10">
         <div className="text-center max-w-2xl mx-auto mb-16">
-          <motion.h2 
-            initial={{ opacity: 0, y: 20 }}
+          <motion.div 
+            initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-sm uppercase tracking-[0.3em] text-brand-red mb-4 font-bold"
+            className="inline-block px-4 py-1.5 rounded-full border border-white/20 bg-white/10 mb-6"
           >
-            التوفر
-          </motion.h2>
+            <h2 className="text-xs uppercase tracking-[0.3em] text-white/90 font-bold">التوفر</h2>
+          </motion.div>
           <motion.h3 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="text-4xl md:text-5xl font-black text-chocolate"
+            className="text-4xl md:text-5xl font-black text-white mb-6"
           >
             خيارات الشراء
           </motion.h3>
@@ -42,20 +40,20 @@ export function PackagingSection() {
           {packagingOptions.map((option, i) => (
             <motion.div
               key={option}
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: i * 0.1 }}
-              whileHover={{ y: -5 }}
+              whileHover={{ y: -10, scale: 1.02 }}
               className="relative group"
             >
-              <div className="h-full bg-cream/30 backdrop-blur-sm border border-chocolate/10 rounded-[2.5rem] p-10 flex items-center justify-center text-center transition-all duration-500 group-hover:bg-white group-hover:shadow-2xl group-hover:shadow-chocolate/5 group-hover:border-brand-red/20">
-                <span className="text-xl md:text-2xl font-bold text-chocolate group-hover:text-brand-red transition-colors duration-300">
+              <div className="h-full bg-white/10 backdrop-blur-xl border border-white/20 rounded-[2.5rem] p-10 flex items-center justify-center text-center transition-all duration-500 group-hover:bg-white/20 group-hover:shadow-[0_20px_50px_rgba(0,0,0,0.3)] group-hover:border-white/40">
+                <span className="text-xl md:text-2xl font-bold text-white transition-colors duration-300">
                   {option}
                 </span>
                 
                 {/* Subtle corner accent */}
-                <div className="absolute top-6 right-6 w-2 h-2 rounded-full bg-brand-red/20 group-hover:bg-brand-red transition-colors" />
+                <div className="absolute top-6 right-6 w-2 h-2 rounded-full bg-white/20 group-hover:bg-white transition-colors" />
               </div>
             </motion.div>
           ))}

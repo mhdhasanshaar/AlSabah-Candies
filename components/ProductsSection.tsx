@@ -13,7 +13,9 @@ export function ProductsSection({ products }: ProductsSectionProps) {
     <section id="products" className="py-24 md:py-32 bg-white bg-pattern-light relative">
       <div className="container mx-auto px-6 md:px-12">
         <div className="text-center max-w-2xl mx-auto mb-24">
-          <h2 className="text-sm uppercase tracking-[0.2em] text-brand-red mb-4 font-medium">مجموعتنا</h2>
+          <div className="inline-block px-4 py-1.5 rounded-full border border-brand-red/20 bg-brand-red/5 mb-6">
+            <h2 className="text-xs uppercase tracking-[0.2em] text-brand-red font-bold">مجموعتنا</h2>
+          </div>
           <h3 className="text-4xl md:text-5xl font-bold text-chocolate mb-6">
             نكهات أصيلة
           </h3>
